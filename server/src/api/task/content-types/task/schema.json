@@ -21,6 +21,7 @@
         "Backlog",
         "To Do",
         "In Progress",
+        "Ready for review",
         "Done"
       ],
       "required": true

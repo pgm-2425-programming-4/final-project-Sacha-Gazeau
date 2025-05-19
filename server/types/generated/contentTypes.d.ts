@@ -425,7 +425,7 @@ export interface ApiTaskTask extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     state: Schema.Attribute.Enumeration<
-      ['Backlog', 'To Do', 'In Progress', 'Done']
+      ['Backlog', 'To Do', 'In Progress', 'Ready for review', 'Done']
     > &
       Schema.Attribute.Required;
     task_types: Schema.Attribute.Relation<
