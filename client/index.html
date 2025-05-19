@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Title -->
+    <title>Kanban Board</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="images/Favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/Favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/Favicons/favicon-16x16.png">
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/main.css" />
+</head>
+
+<body class="layout">
+    <aside class="sidebar">
+        <h2 class="sidebar__title">Projects</h2>
+        <ul class="sidebar__list">
+            <li class="sidebar__item">PGM3</li>
+            <li class="sidebar__item">PGM4</li>
+        </ul>
+    </aside>
+
+    <main class="taskboard">
+        <header class="taskboard__header">
+            <div class="taskboard__filters">
+                <select class="taskboard__select">
+                    <option>All</option>
+                    <option>Back-end</option>
+                </select>
+                <input type="text" placeholder="Search tasks..." class="taskboard__search" />
+            </div>
+            <div class="taskboard__actions">
+                <p class="taskboard__project">Active project: PGM3</p>
+                <button class="btn btn--add">Add new task</button>
+                <button class="btn btn--backlog">View backlog</button>
+            </div>
+        </header>
+        <div class="taskboard__columns">
+            <section class="taskboard__column taskboard__column--todo">
+                <h3 class="taskboard__title">To do</h3>
+                <div class="taskcard">
+                    <p class="taskcard__title">Create pipeline</p>
+                    <span class="taskcard__label taskcard__label--infra">Infra</span>
+                </div>
+            </section>
+
+            <section class="taskboard__column taskboard__column--progress">
+                <h3 class="taskboard__title">In progress</h3>
+                <div class="taskcard">
+                    <p class="taskcard__title">Set up Strapi</p>
+                    <span class="taskcard__label taskcard__label--backend">Back-end</span>
+                </div>
+            </section>
+
+            <section class="taskboard__column taskboard__column--review">
+                <h3 class="taskboard__title">Ready for review</h3>
+                <div class="taskcard">
+                    <p class="taskcard__title">Add Prettier</p>
+                    <span class="taskcard__label taskcard__label--frontend">Front-end</span>
+                </div>
+            </section>
+
+            <section class="taskboard__column taskboard__column--done">
+                <h3 class="taskboard__title">Done</h3>
+                <div class="taskcard">
+                    <p class="taskcard__title">Initialize Git</p>
+                    <span class="taskcard__label taskcard__label--infra">Infra</span>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+
+</html>

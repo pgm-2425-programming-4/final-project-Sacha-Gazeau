@@ -1,0 +1,20 @@
+.sidebar {
+  width: 150px;
+  padding: 20px;
+  background: var(--color-secondary);
+  border-right: 1px solid var(--color-orange);
+  box-shadow: 0 0 0.8rem rgb(0, 0, 0);
+  & .sidebar__title {
+    font-size: 14px;
+    color: var(--color-gray);
+    margin-bottom: 10px;
+  }
+  & .sidebar__list {
+    list-style: none;
+    padding: 0;
+    & .sidebar__item {
+      margin: 10px 0;
+      cursor: pointer;
+    }
+  }
+}
