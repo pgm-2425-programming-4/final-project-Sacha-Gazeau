@@ -1,0 +1,42 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tasks",
+  "info": {
+    "singularName": "task",
+    "pluralName": "tasks",
+    "displayName": "Tasks",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true
+    },
+    "state": {
+      "type": "enumeration",
+      "enum": [
+        "Backlog",
+        "To Do",
+        "In Progress",
+        "Ready for review",
+        "Done"
+      ],
+      "required": true
+    },
+    "task_types": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::task-type.task-type",
+      "inversedBy": "tasks"
+    },
+    "course": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::course.course",
+      "inversedBy": "tasks"
+    }
+  }
+}
