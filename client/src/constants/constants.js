@@ -1,0 +1,7 @@
+export const API_URL = import.meta.env.PROD
+  ? "https://final-project-sacha-gazeau.onrender.com/api"
+  : "http://localhost:1337/api";
+
+export const API_TOKEN = import.meta.env.PROD
+  ? "4a6fb663353bca702568e426d446dffab0ed7bb78f6d4b203a7274a1f086093f031569e69ad43e383d2b3863a5e86b302d16e501437a95075adca97ef9372d57cac588f4e84b2e12adc3db06e9d32040ed785c23b097280f761819d9dd9b33c6900ceddfb8e0c4c05dd1a71454c7575ae9a9aeed29dcad3e761bd4eb152f5d01"
+  : "75626be3f6b68b75ce5d5c236884841eff7cd42de2f318949156dc16bca5da53c12f8f0d058c21f4a68c0ecf534d018293dd9d8438188506882fa92939daa5385c3dabac536a48890d42bebc4ad0bea1b12b6a21371e8f03c81d8dacb3ba4014b0db5bdebc943a9a04e711ff5d365ef34b92ac4c120ab22c8c3ea68c57c6dabf";

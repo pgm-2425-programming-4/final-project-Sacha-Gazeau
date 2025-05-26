@@ -2,6 +2,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
+import { API_URL, API_TOKEN } from "../constants/constants";
 
 const PaginatedBacklog = () => {
   const [page, setPage] = useState(1);
@@ -10,7 +11,7 @@ const PaginatedBacklog = () => {
     queryKey: ["backlog", page],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:1337/api/tasks?pagination[page]=${page}&pagination[pageSize]=10&filters[status][name][$eq]=Backlog`
+        `${API_URL}/tasks?pagination[page]=${page}&pagination[pageSize]=10&filters[status][name][$eq]=Backlog`
       );
       return res.data;
     },
