@@ -1,0 +1,15 @@
+.btn {
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
+.btn--add {
+  background-color: #00b894;
+}
+
+.btn--backlog {
+  background-color: #0984e3;
+}

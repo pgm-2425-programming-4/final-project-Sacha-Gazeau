@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useState } from "react";
 import { API_URL, API_TOKEN } from "../constants/constants";
+import { TaskBoard } from "./TaskBoard";
 
 const PaginatedBacklog = () => {
   const [page, setPage] = useState(1);
@@ -11,7 +12,7 @@ const PaginatedBacklog = () => {
     queryKey: ["backlog", page],
     queryFn: async () => {
       const res = await axios.get(
-        `${API_URL}/tasks?pagination[page]=${page}&pagination[pageSize]=10&filters[status][name][$eq]=Backlog`,
+        `${API_URL}/tasks?populate=*&pagination[page]=${page}&pagination[pageSize]=10`,
         {
           headers: {
             Authorization: API_TOKEN,
@@ -25,22 +26,11 @@ const PaginatedBacklog = () => {
   if (isLoading) return <p>Laden...</p>;
   if (isError) return <p>Fout bij het laden</p>;
 
+  const tasks = data.data;
+
   return (
     <>
-      <table>
-        <thead>
-          <tr>
-            <th>Taak</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.data.map((task) => (
-            <tr key={task.id}>
-              <td>{task.attributes.title}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <TaskBoard tasks={tasks} />
 
       <button onClick={() => setPage((p) => p - 1)} disabled={page === 1}>
         Vorige
