@@ -12,7 +12,7 @@ const PaginatedBacklog = () => {
     queryKey: ["backlog", page],
     queryFn: async () => {
       const res = await axios.get(
-        `${API_URL}/tasks?populate=*&pagination[page]=${page}&pagination[pageSize]=10`,
+        `${API_URL}/tasks?pagination[page]=1&pagination[pageSize]=10`,
         {
           headers: {
             Authorization: API_TOKEN,

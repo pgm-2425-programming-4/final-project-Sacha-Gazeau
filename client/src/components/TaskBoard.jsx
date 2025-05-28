@@ -1,7 +1,9 @@
 export const TaskBoard = ({ tasks }) => {
-  const states = ["To do", "In progress", "Ready for review", "Done"];
+  // Obtenir les states uniques présents dans les tâches
+  const states = [...new Set(tasks.map((task) => task.state))];
 
   return (
+    <main className="taskboard">
       <div className="taskboard__columns">
         {states.map((state) => (
           <section
@@ -16,17 +18,14 @@ export const TaskBoard = ({ tasks }) => {
               .map((task) => (
                 <div key={task.id} className="taskcard">
                   <p className="taskcard__title">{task.title}</p>
-                  <span
-                    className={`taskcard__label taskcard__label--${(
-                      task.category || "default"
-                    ).toLowerCase()}`}
-                  >
-                    {task.category || "No category"}
+                  <span className="taskcard__label taskcard__label--default">
+                    {task.task_types || "No category"}
                   </span>
                 </div>
               ))}
           </section>
         ))}
       </div>
+    </main>
   );
 };
