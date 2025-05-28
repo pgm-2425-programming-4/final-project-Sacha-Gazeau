@@ -11,7 +11,12 @@ const PaginatedBacklog = () => {
     queryKey: ["backlog", page],
     queryFn: async () => {
       const res = await axios.get(
-        `${API_URL}/tasks?pagination[page]=${page}&pagination[pageSize]=10&filters[status][name][$eq]=Backlog`
+        `${API_URL}/tasks?pagination[page]=${page}&pagination[pageSize]=10&filters[status][name][$eq]=Backlog`,
+        {
+          headers: {
+            Authorization: API_TOKEN,
+          },
+        }
       );
       return res.data;
     },
