@@ -15,27 +15,22 @@
       "type": "string",
       "required": true
     },
-    "state": {
-      "type": "enumeration",
-      "enum": [
-        "Backlog",
-        "To Do",
-        "In Progress",
-        "Ready for review",
-        "Done"
-      ],
-      "required": true
-    },
     "task_types": {
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::task-type.task-type",
       "inversedBy": "tasks"
     },
-    "course": {
+    "project": {
       "type": "relation",
       "relation": "manyToOne",
-      "target": "api::course.course",
+      "target": "api::project.project",
+      "inversedBy": "tasks"
+    },
+    "state": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::state.state",
       "inversedBy": "tasks"
     }
   }
