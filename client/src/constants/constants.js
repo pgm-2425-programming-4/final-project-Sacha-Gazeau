@@ -1,7 +1,9 @@
-export const API_URL = import.meta.env.PROD
-  ? "https://final-project-sacha-gazeau.onrender.com/api"
-  : "http://localhost:1337/api";
+const isProd = import.meta.env.PROD;
 
-export const API_TOKEN = import.meta.env.PROD
-  ? "4a6fb663353bca702568e426d446dffab0ed7bb78f6d4b203a7274a1f086093f031569e69ad43e383d2b3863a5e86b302d16e501437a95075adca97ef9372d57cac588f4e84b2e12adc3db06e9d32040ed785c23b097280f761819d9dd9b33c6900ceddfb8e0c4c05dd1a71454c7575ae9a9aeed29dcad3e761bd4eb152f5d01"
-  : "7009c39773ba550a36d9555c0f4fe74af85f2611901cf0986e67b9276597941409c77efaa2ed986934821187cf7e7216eb472ad9685feffb5744cf03b4ab0cf6e44d4cf35a979b50c3aebcef5df15bcba6043424b2336f9d271408a538763ffdea157bae1268ee341b54ef2c0992d061010418be6b61dcd33260193fb4e4e78b";
+export const API_URL = isProd
+  ? import.meta.env.VITE_API_URL_PROD
+  : import.meta.env.VITE_API_URL_DEV;
+
+export const API_TOKEN = isProd
+  ? import.meta.env.VITE_API_TOKEN_PROD
+  : import.meta.env.VITE_API_TOKEN_DEV;
