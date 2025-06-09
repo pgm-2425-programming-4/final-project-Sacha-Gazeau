@@ -11,20 +11,18 @@ const PaginatedBacklog = () => {
   const { data, isLoading, isError } = useQuery({
     queryKey: ["backlog", page],
     queryFn: async () => {
-      const res = await axios.get(
-        `${API_URL}/tasks?pagination[page]=1&pagination[pageSize]=10`,
-        {
-          headers: {
-            Authorization: API_TOKEN,
-          },
-        }
-      );
+      const res = await axios.get(`${API_URL}/tasks?populate=*`, {
+        headers: {
+          Authorization: API_TOKEN,
+        },
+      });
       return res.data;
     },
   });
 
   if (isLoading) return <p>Laden...</p>;
   if (isError) return <p>Fout bij het laden</p>;
+  console.log(data);
 
   const tasks = data.data;
 

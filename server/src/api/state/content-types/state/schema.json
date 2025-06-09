@@ -11,14 +11,16 @@
     "draftAndPublish": true
   },
   "attributes": {
-    "Title": {
-      "type": "string"
-    },
     "tasks": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::task.task",
       "mappedBy": "state"
+    },
+    "title": {
+      "type": "string",
+      "unique": true,
+      "required": true
     }
   }
 }
