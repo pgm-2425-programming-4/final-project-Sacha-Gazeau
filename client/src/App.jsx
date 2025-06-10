@@ -3,20 +3,30 @@ import Sidebar from "./components/Sidebar";
 import StatusBoard from "./components/StatusBoard";
 import { PaginatedBacklog } from "./components/PaginatedBacklog";
 import TopBar from "./components/TopBar";
+import { TaskForm } from "./components/TaskForm"; // Importez le composant TaskForm
 
 export default function App() {
   const [activeProject, setActiveProject] = useState("PGM3");
   const [selectedLabel, setSelectedLabel] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
+  const [showForm, setShowForm] = useState(false);
 
   const handleAddTask = () => {
-    console.log("Add task clicked");
-    // Later: open form
+    setShowForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowForm(false);
+  };
+
+  const handleSubmitTask = (task) => {
+    console.log("New Task:", task);
+    // Ajoutez ici la logique pour envoyer la nouvelle tâche à votre API
   };
 
   const handleViewBacklog = () => {
     console.log("View backlog clicked");
-    // Later: show/hide PaginatedBacklog with a toggle
+    // Plus tard : afficher/masquer PaginatedBacklog avec un toggle
   };
 
   return (
@@ -47,6 +57,9 @@ export default function App() {
           />
         </div>
       </main>
+      {showForm && (
+        <TaskForm onClose={handleCloseForm} onSubmit={handleSubmitTask} />
+      )}
     </>
   );
 }
