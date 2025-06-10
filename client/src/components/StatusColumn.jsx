@@ -3,27 +3,30 @@ import { API_URL, API_TOKEN } from "../constants/constants";
 
 export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
   const fetchTasks = async () => {
-    const url = `${API_URL}/tasks?filters[project][$eq]=${encodeURIComponent(
+    const url = `${API_URL}/tasks?filters[project][Name][$eq]=${encodeURIComponent(
       project
-    )}&populate=*`;
+    )}&populate[task_types][fields][0]=name&populate[project][fields][0]=Name&populate[state][fields][0]=title`;
+
+    console.log("Request URL:", url);
 
     const res = await fetch(url, {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
+        "Content-Type": "application/json",
       },
     });
 
     if (!res.ok) {
       const errorText = await res.text();
       console.error("❌ Fetch failed:", res.status, errorText);
-      throw new Error("Failed to fetch tasks");
+      throw new Error(`Failed to fetch tasks: ${res.status} ${res.statusText}`);
     }
 
     const data = await res.json();
     return data;
   };
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["tasks", project, status],
     queryFn: fetchTasks,
   });
@@ -32,12 +35,12 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
 
   const filteredTasks = tasks
     .filter((task) => {
-      const stateName = task?.state?.name;
-      return stateName?.toLowerCase() === status.toLowerCase();
+      const stateTitle = task?.state?.title;
+      return stateTitle?.toLowerCase() === status.toLowerCase();
     })
     .filter((task) => {
-      const title = task.Title?.toLowerCase() || "";
-      const description = task.Description?.toLowerCase() || "";
+      const title = task.title?.toLowerCase() || "";
+      const description = task.description?.toLowerCase() || "";
       const labels = task.labels || [];
 
       const matchesSearch =
@@ -59,27 +62,27 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
       <h3 className="taskboard__title">{status}</h3>
 
       {isLoading && <p>Loading...</p>}
-      {isError && <p>Error loading tasks.</p>}
+      {isError && <p>Error loading tasks: {error.message}</p>}
       {!isLoading && !isError && filteredTasks.length === 0 && <p>No tasks</p>}
 
       {filteredTasks.map((task) => {
-        const labels = task.labels || [];
+        const taskTypes = task.task_types || [];
 
         return (
           <div key={task.id} className="taskcard">
-            <p className="taskcard__title">{task.Title}</p>
-            <div className="taskcard__label">
-              {labels.map((l) => {
-                const name = l.label;
+            <p className="taskcard__title">{task.title}</p>
+            <div className="taskcard__task-types">
+              {taskTypes.map((type, index) => {
+                const name = type.name;
                 const icons = {
                   "Front-end": "🎨",
                   "Back-end": "🧠",
-                  "Infra": "🛠️",
-                  "Documentation": "📄",
+                  Infra: "🛠️",
+                  Documentation: "📄",
                 };
 
                 return (
-                  <span key={l.id} className="task__label">
+                  <span key={type.id || index} className="taskcard__label ">
                     {icons[name] || "🏷️"} {name}
                   </span>
                 );

@@ -1,5 +1,3 @@
-
-
 export function Pagination({
   currentPage,
   pageCount,

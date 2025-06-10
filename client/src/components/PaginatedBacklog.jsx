@@ -8,11 +8,11 @@ export function PaginatedBacklog() {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     queryKey: ["backlogTasks", currentPage, pageSize],
     queryFn: async () => {
       const res = await fetch(
-        `${API_URL}/tasks?populate=*&pagination[page]=${currentPage}`,
+        `${API_URL}/tasks?populate=*&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${API_TOKEN}`,
@@ -21,7 +21,9 @@ export function PaginatedBacklog() {
         }
       );
       if (!res.ok) {
-        throw new Error("Failed to fetch tasks");
+        throw new Error(
+          `Failed to fetch tasks: ${res.status} ${res.statusText}`
+        );
       }
       return res.json();
     },
@@ -29,14 +31,22 @@ export function PaginatedBacklog() {
   });
 
   if (isLoading) return <p>Loading...</p>;
-  if (isError) return <p>Error loading tasks.</p>;
+  if (isError) return <p>Error loading tasks: {error.message}</p>;
+
+  if (!data || !data.data) {
+    return <p>No data available.</p>;
+  }
 
   const tasks = data.data;
-  const pageCount = data.meta.pagination.pageCount;
-  console.log(data.data);
+  const pageCount = data.meta?.pagination?.pageCount || 1;
+
+  console.log("Current Page:", currentPage);
+  console.log("Page Size:", pageSize);
+  console.log("Fetched Data:", data);
+
   return (
     <>
-      <h2>Backlog taken</h2>
+      <h2>Backlog</h2>
       <Backlog tasks={tasks} />
       <Pagination
         currentPage={currentPage}
@@ -45,7 +55,7 @@ export function PaginatedBacklog() {
         pageSize={pageSize}
         onPageSizeChange={(size) => {
           setPageSize(size);
-          setCurrentPage(1); // reset to page 1 when size changes
+          setCurrentPage(1);
         }}
       />
     </>

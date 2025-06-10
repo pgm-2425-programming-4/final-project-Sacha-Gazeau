@@ -1,4 +1,3 @@
-
 import { StatusColumn } from "./StatusColumn";
 
 export default function StatusBoard({ project, selectedLabel, searchTerm }) {
