@@ -1,7 +1,7 @@
 export default function Sidebar({ projects, activeProject, onProjectSelect }) {
   return (
-    <div className="sidebar">
-      <h4 className="sidebar__title">PROJECTS</h4>
+    <>
+      <h2 className="sidebar__title">PROJECTS</h2>
       <ul className="sidebar__list">
         {projects.map((project) => {
           let className = "sidebar__item";
@@ -20,6 +20,6 @@ export default function Sidebar({ projects, activeProject, onProjectSelect }) {
           );
         })}
       </ul>
-    </div>
+    </>
   );
 }

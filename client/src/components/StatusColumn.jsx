@@ -55,8 +55,8 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
     });
 
   return (
-    <div className="status__column">
-      <h3 className="status__title">{status}</h3>
+    <section className="taskboard__column">
+      <h3 className="taskboard__title">{status}</h3>
 
       {isLoading && <p>Loading...</p>}
       {isError && <p>Error loading tasks.</p>}
@@ -66,16 +66,16 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
         const labels = task.labels || [];
 
         return (
-          <div key={task.id} className="task__card">
-            <p className="task__title">{task.Title}</p>
-            <div className="task__labels">
+          <div key={task.id} className="taskcard">
+            <p className="taskcard__title">{task.Title}</p>
+            <div className="taskcard__label">
               {labels.map((l) => {
                 const name = l.label;
                 const icons = {
                   "Front-end": "🎨",
                   "Back-end": "🧠",
-                  Infra: "🛠️",
-                  Documentation: "📄",
+                  "Infra": "🛠️",
+                  "Documentation": "📄",
                 };
 
                 return (
@@ -88,6 +88,6 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
           </div>
         );
       })}
-    </div>
+    </section>
   );
 }

@@ -20,31 +20,33 @@ export default function App() {
   };
 
   return (
-    <div className="app-layout">
-      <Sidebar
-        projects={["PGM3", "PGM4"]}
-        activeProject={activeProject}
-        onProjectSelect={setActiveProject}
-      />
-
-      <div className="main-content">
-        <TopBar
-          selectedLabel={selectedLabel}
-          onLabelChange={setSelectedLabel}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          onAddTask={handleAddTask}
-          onViewBacklog={handleViewBacklog}
+    <>
+      <aside className="sidebar">
+        <Sidebar
+          projects={["PGM3", "PGM4"]}
+          activeProject={activeProject}
+          onProjectSelect={setActiveProject}
         />
-
-        <StatusBoard
-          project={activeProject}
-          selectedLabel={selectedLabel}
-          searchTerm={searchTerm}
-        />
-
-        {/* <PaginatedBacklog project={activeProject} /> */}
-      </div>
-    </div>
+      </aside>
+      <main className="taskboard">
+        <header className="taskboard__header">
+          <TopBar
+            selectedLabel={selectedLabel}
+            onLabelChange={setSelectedLabel}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            onAddTask={handleAddTask}
+            onViewBacklog={handleViewBacklog}
+          />
+        </header>
+        <div className="taskboard__columns">
+          <StatusBoard
+            project={activeProject}
+            selectedLabel={selectedLabel}
+            searchTerm={searchTerm}
+          />
+        </div>
+      </main>
+    </>
   );
 }
