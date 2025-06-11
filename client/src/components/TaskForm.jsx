@@ -48,6 +48,29 @@ export function TaskForm({ onClose, onSubmit, task }) {
     onSubmit(taskData);
   };
 
+  const handleDelete = async () => {
+    if (!task?.id) return;
+
+    try {
+      const res = await fetch(`${API_URL}/tasks/${task.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Failed to delete task: ${res.status} ${errorText}`);
+      }
+
+      console.log("Task deleted successfully");
+      onClose(); // Fermer le formulaire après suppression
+    } catch (err) {
+      console.error("Error deleting task:", err);
+    }
+  };
+
   return (
     <div className="popup">
       <div className="popup__inner">
@@ -130,6 +153,11 @@ export function TaskForm({ onClose, onSubmit, task }) {
             <button type="button" className="close" onClick={onClose}>
               Cancel
             </button>
+            {task?.id && (
+              <button type="button" className="delete" onClick={handleDelete}>
+                Delete
+              </button>
+            )}
           </div>
         </form>
       </div>

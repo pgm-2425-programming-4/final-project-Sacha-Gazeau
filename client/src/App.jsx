@@ -28,8 +28,6 @@ export default function App() {
     const method = taskId ? "PUT" : "POST";
     const url = taskId ? `${API_URL}/tasks/${taskId}` : `${API_URL}/tasks`;
 
-    console.log(`Submitting ${method} request to URL: ${url}`);
-
     try {
       const res = await fetch(url, {
         method,
@@ -54,15 +52,9 @@ export default function App() {
         );
       }
 
-      const data = await res.json();
-      console.log(`✅ Task ${taskId ? "updated" : "created"}:`, data);
-
-      // ✅ Notification succès
+      await res.json();
       setNotification({ type: "success", message: "✅ Tâche enregistrée !" });
-    } catch (err) {
-      console.error("❌ Error submitting task:", err);
-
-      // ❌ Notification erreur
+    } catch {
       setNotification({
         type: "error",
         message: "❌ Erreur lors de l'enregistrement",
@@ -70,14 +62,8 @@ export default function App() {
     } finally {
       handleCloseForm();
       queryClient.invalidateQueries(["tasks"]);
-
-      // ⏱️ Cache la notif après 3 secondes
       setTimeout(() => setNotification(null), 3000);
     }
-  };
-
-  const handleViewBacklog = () => {
-    console.log("View backlog clicked");
   };
 
   return (
@@ -97,7 +83,7 @@ export default function App() {
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
             onAddTask={handleAddTask}
-            onViewBacklog={handleViewBacklog}
+            onViewBacklog={() => {}}
           />
         </header>
         <div className="taskboard__columns">
