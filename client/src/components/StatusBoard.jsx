@@ -1,6 +1,11 @@
 import { StatusColumn } from "./StatusColumn";
 
-export default function StatusBoard({ project, selectedLabel, searchTerm }) {
+export default function StatusBoard({
+  project,
+  selectedLabel,
+  searchTerm,
+  onEditTask,
+}) {
   const statuses = ["To do", "In progress", "Ready for review", "Done"];
 
   return (
@@ -12,6 +17,7 @@ export default function StatusBoard({ project, selectedLabel, searchTerm }) {
           project={project}
           selectedLabel={selectedLabel}
           searchTerm={searchTerm}
+          onEditTask={onEditTask}
         />
       ))}
     </>

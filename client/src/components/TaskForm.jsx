@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { API_URL, API_TOKEN } from "../constants/constants";
 
-export function TaskForm({ onClose, onSubmit }) {
+export function TaskForm({ onClose, onSubmit, task }) {
   const [title, setTitle] = useState("");
   const [taskTypes, setTaskTypes] = useState([]);
   const [selectedTaskTypes, setSelectedTaskTypes] = useState([]);
@@ -10,7 +10,6 @@ export function TaskForm({ onClose, onSubmit }) {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState("");
 
-  // fetch relations
   useEffect(() => {
     async function fetchData(endpoint, setter) {
       const res = await fetch(`${API_URL}/${endpoint}`, {
@@ -22,26 +21,37 @@ export function TaskForm({ onClose, onSubmit }) {
       setter(json.data);
     }
 
-    fetchData("task-types", setTaskTypes, "Task Types");
-    fetchData("states", setStates, "States");
-    fetchData("projects", setProjects, "Projects");
+    fetchData("task-types", setTaskTypes);
+    fetchData("states", setStates);
+    fetchData("projects", setProjects);
   }, []);
+
+  useEffect(() => {
+    if (task) {
+      setTitle(task.title || "");
+      setSelectedTaskTypes(task.task_types?.map((t) => t.id) || []);
+      setSelectedState(task.state?.id?.toString() || "");
+      setSelectedProject(task.project?.id?.toString() || "");
+    }
+  }, [task]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({
+    const taskData = {
+      id: task?.id,
       title,
-      task_types: selectedTaskTypes.map((id) => ({ id })), // transforme en objets
+      task_types: selectedTaskTypes.map((id) => ({ id })),
       state: { id: Number(selectedState) },
       project: { id: Number(selectedProject) },
-    });
-    onClose();
+    };
+    console.log("Submitting task data:", taskData);
+    onSubmit(taskData);
   };
 
   return (
     <div className="popup">
       <div className="popup__inner">
-        <h2>Add New Task</h2>
+        <h2>{task?.id ? `Edit a task ${task?.id}` : "Add a task"}</h2>
         <form className="popup__container" onSubmit={handleSubmit}>
           <div className="popup__block">
             <div className="popup__content">

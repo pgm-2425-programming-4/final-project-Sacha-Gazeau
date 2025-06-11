@@ -10,23 +10,23 @@ export default function App() {
   const [activeProject, setActiveProject] = useState("PGM3");
   const [selectedLabel, setSelectedLabel] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
-  const [taskToEdit, setTaskToEdit] = useState(null); // null = fermé
+  const [taskToEdit, setTaskToEdit] = useState(null);
 
-  // Ouvrir le formulaire pour ajouter une tâche
   const handleAddTask = () => {
-    setTaskToEdit({}); // objet vide = ajout
+    setTaskToEdit({});
   };
 
-  // Fermer le formulaire
   const handleCloseForm = () => {
     setTaskToEdit(null);
   };
 
-  // Soumettre tâche (ajout ou modification plus tard)
   const handleSubmitTask = async (task) => {
+    const method = task.id ? "PUT" : "POST";
+    const url = task.id ? `${API_URL}/tasks/${task.id}` : `${API_URL}/tasks`;
+
     try {
-      const res = await fetch(`${API_URL}/tasks`, {
-        method: "POST",
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${API_TOKEN}`,
@@ -34,46 +34,26 @@ export default function App() {
         body: JSON.stringify({
           data: {
             title: task.title,
-            task_types: {
-              connect: task.task_types.map((t) => ({
-                id: typeof t === "object" ? t.id : t,
-              })),
-            },
-            state: {
-              connect: [
-                {
-                  id:
-                    typeof task.state === "object" ? task.state.id : task.state,
-                },
-              ],
-            },
-            project: {
-              connect: [
-                {
-                  id:
-                    typeof task.project === "object"
-                      ? task.project.id
-                      : task.project,
-                },
-              ],
-            },
+            task_types: task.task_types,
+            state: task.state,
+            project: task.project,
           },
         }),
       });
 
-      if (!res.ok) throw new Error("Failed to create task");
+      if (!res.ok)
+        throw new Error(`Failed to ${task.id ? "update" : "create"} task`);
       const data = await res.json();
-      console.log("✅ Task created:", data);
+      console.log(`✅ Task ${task.id ? "updated" : "created"}:`, data);
     } catch (err) {
       console.error("❌ Error submitting task:", err);
     } finally {
-      setTaskToEdit(null); // Fermer le formulaire
+      handleCloseForm();
     }
   };
 
   const handleViewBacklog = () => {
     console.log("View backlog clicked");
-    // Plus tard : afficher/masquer PaginatedBacklog avec un toggle
   };
 
   return (
@@ -101,14 +81,13 @@ export default function App() {
             project={activeProject}
             selectedLabel={selectedLabel}
             searchTerm={searchTerm}
-            onEditTask={(task) => setTaskToEdit(task)} // ✅ édition
+            onEditTask={setTaskToEdit}
           />
         </div>
       </main>
-
-      {taskToEdit && (
+      {taskToEdit !== null && (
         <TaskForm
-          task={taskToEdit} // null = ajout | objet = édition
+          task={taskToEdit}
           onClose={handleCloseForm}
           onSubmit={handleSubmitTask}
         />

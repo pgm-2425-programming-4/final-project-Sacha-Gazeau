@@ -1,7 +1,13 @@
 import { useQuery } from "@tanstack/react-query";
 import { API_URL, API_TOKEN } from "../constants/constants";
 
-export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
+export function StatusColumn({
+  status,
+  project,
+  selectedLabel,
+  searchTerm,
+  onEditTask,
+}) {
   const fetchTasks = async () => {
     const url = `${API_URL}/tasks?filters[project][Name][$eq]=${encodeURIComponent(
       project
@@ -67,7 +73,11 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
         const taskTypes = task.task_types || [];
 
         return (
-          <div key={task.id} className="taskcard">
+          <div
+            key={task.id}
+            className="taskcard"
+            onClick={() => onEditTask(task)}
+          >
             <p className="taskcard__title">{task.title}</p>
             <div className="taskcard__task-types">
               {taskTypes.map((type, index) => {
