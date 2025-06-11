@@ -7,8 +7,6 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
       project
     )}&populate[task_types][fields][0]=name&populate[project][fields][0]=Name&populate[state][fields][0]=title`;
 
-    console.log("Request URL:", url);
-
     const res = await fetch(url, {
       headers: {
         Authorization: `Bearer ${API_TOKEN}`,
@@ -41,7 +39,7 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
     .filter((task) => {
       const title = task.title?.toLowerCase() || "";
       const description = task.description?.toLowerCase() || "";
-      const labels = task.labels || [];
+      const taskTypes = task.task_types || [];
 
       const matchesSearch =
         !searchTerm ||
@@ -50,8 +48,8 @@ export function StatusColumn({ status, project, selectedLabel, searchTerm }) {
 
       const matchesLabel =
         selectedLabel === "All" ||
-        labels.some(
-          (l) => l?.label?.toLowerCase?.() === selectedLabel.toLowerCase()
+        taskTypes.some(
+          (type) => type?.name?.toLowerCase?.() === selectedLabel.toLowerCase()
         );
 
       return matchesSearch && matchesLabel;
