@@ -1,11 +1,14 @@
 import { useState } from "react";
-import Sidebar from "./components/Sidebar";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Sidebar } from "./components/Sidebar";
 import StatusBoard from "./components/StatusBoard";
 import { PaginatedBacklog } from "./components/PaginatedBacklog";
 import TopBar from "./components/TopBar";
 import { TaskForm } from "./components/TaskForm";
 import { API_URL, API_TOKEN } from "./constants/constants";
 import { useQueryClient } from "@tanstack/react-query";
+import { Home } from "./components/Home";
+import { About } from "./components/About";
 
 export default function App() {
   const [activeProject, setActiveProject] = useState("PGM3");
@@ -13,6 +16,7 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [notification, setNotification] = useState(null);
+  const [showBacklog, setShowBacklog] = useState(false);
   const queryClient = useQueryClient();
 
   const handleAddTask = () => {
@@ -67,7 +71,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <Router>
       <aside className="sidebar">
         <Sidebar
           projects={["PGM3", "PGM4"]}
@@ -83,17 +87,40 @@ export default function App() {
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
             onAddTask={handleAddTask}
-            onViewBacklog={() => {}}
+            onViewBacklog={() => setShowBacklog((prev) => !prev)}
           />
         </header>
-        <div className="taskboard__columns">
-          <StatusBoard
-            project={activeProject}
-            selectedLabel={selectedLabel}
-            searchTerm={searchTerm}
-            onEditTask={setTaskToEdit}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/projects/:id"
+            element={
+              showBacklog ? (
+                <PaginatedBacklog
+                  activeProject={activeProject}
+                  onEditTask={setTaskToEdit}
+                />
+              ) : (
+                <StatusBoard
+                  project={activeProject}
+                  selectedLabel={selectedLabel}
+                  searchTerm={searchTerm}
+                  onEditTask={setTaskToEdit}
+                />
+              )
+            }
           />
-        </div>
+          <Route
+            path="/projects/:id/backlog"
+            element={
+              <PaginatedBacklog
+                activeProject={activeProject}
+                onEditTask={setTaskToEdit}
+              />
+            }
+          />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </main>
       {taskToEdit !== null && (
         <TaskForm
@@ -107,6 +134,6 @@ export default function App() {
           {notification.message}
         </div>
       )}
-    </>
+    </Router>
   );
 }

@@ -1,12 +1,15 @@
 .taskboard {
   flex: 1;
   padding: 20px;
+  margin-left: 200px;
 }
 
 .taskboard__columns {
   display: flex;
   gap: 15px;
   overflow-x: auto;
+  flex-wrap: wrap;
+  min-width: 50.0625rem;
 }
 
 .taskboard__column {
