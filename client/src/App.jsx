@@ -28,11 +28,12 @@ export default function App() {
   };
 
   const handleSubmitTask = async (task) => {
-    const taskId = task.id;
-    const method = taskId ? "PUT" : "POST";
-    const url = taskId ? `${API_URL}/tasks/${taskId}` : `${API_URL}/tasks`;
-
     try {
+      const taskId = task.documentId;
+      const url = taskId ? `${API_URL}/tasks/${taskId}` : `${API_URL}/tasks`;
+      const method = taskId ? "PUT" : "POST";
+      console.log(url);
+
       const res = await fetch(url, {
         method,
         headers: {
@@ -51,14 +52,12 @@ export default function App() {
 
       if (!res.ok) {
         const errorText = await res.text();
-        throw new Error(
-          `Failed to ${taskId ? "update" : "create"} task: ${res.status} ${errorText}`
-        );
+        throw new Error(`Erreur ${res.status}: ${errorText}`);
       }
 
-      await res.json();
       setNotification({ type: "success", message: "✅ Tâche enregistrée !" });
-    } catch {
+    } catch (err) {
+      console.error(err);
       setNotification({
         type: "error",
         message: "❌ Erreur lors de l'enregistrement",

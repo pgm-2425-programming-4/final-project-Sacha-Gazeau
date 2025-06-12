@@ -38,21 +38,22 @@ export function TaskForm({ onClose, onSubmit, task }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const taskData = {
-      id: task?.id,
+      id: task?.id, // <-- important, id numérique ici
       title,
       task_types: selectedTaskTypes.map((id) => ({ id })),
       state: { id: Number(selectedState) },
       project: { id: Number(selectedProject) },
+      documentId: task?.documentId, // garder aussi documentId si besoin
     };
     console.log("Submitting task data:", taskData);
     onSubmit(taskData);
   };
 
   const handleDelete = async () => {
-    if (!task?.id) return;
+    if (!task?.documentId) return;
 
     try {
-      const res = await fetch(`${API_URL}/tasks/${task.id}`, {
+      const res = await fetch(`${API_URL}/tasks/${task.documentId}`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${API_TOKEN}`,
@@ -65,7 +66,7 @@ export function TaskForm({ onClose, onSubmit, task }) {
       }
 
       console.log("Task deleted successfully");
-      onClose(); // Fermer le formulaire après suppression
+      onClose();
     } catch (err) {
       console.error("Error deleting task:", err);
     }
