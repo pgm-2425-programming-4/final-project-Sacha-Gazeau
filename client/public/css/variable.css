@@ -2,8 +2,8 @@
   --color-background: #c9c9b5;
   --color-secondary: #598575;
   --color-secondary-light: #59857588;
-  --color-text: #444;
-  --color-text-secondary: #ffffff;
+  --color-text: #222; /* plus sombre */
+  --color-text-secondary: #fff; /* blanc */
   --color-gray: #444;
   --color-orange: #e7ba84;
   --color-orange-light: #e7ba8477;

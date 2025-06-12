@@ -15,7 +15,11 @@ export default function Topbar({
           className="taskboard__select"
           value={selectedLabel}
           onChange={(e) => onLabelChange(e.target.value)}
+          aria-label="Filter tasks by label"
         >
+          <option className="visually-hidden" disabled>
+            Select label
+          </option>
           {labels.map((label) => (
             <option key={label} value={label}>
               {label}
