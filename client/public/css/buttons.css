@@ -2,14 +2,21 @@
   border: none;
   padding: 8px 12px;
   border-radius: 4px;
-  color: white;
+  color: var(--color-text-secondary);
   cursor: pointer;
 }
 
 .btn--add {
-  background-color: #00b894;
+  background-color: var(--color-secondary);
+  &:hover {
+    background-color: var(--color-secondary-light);
+  }
 }
 
 .btn--backlog {
-  background-color: #0984e3;
+  background-color: var(--color-orange);
+  color: var(--color-text);
+  &:hover {
+    background-color: var(--color-orange-light);
+  }
 }
