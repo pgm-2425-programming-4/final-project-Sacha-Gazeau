@@ -35,6 +35,7 @@
 }
 
 .taskcard__title {
+  color: var(--color-text-secondary);
   margin: 0 0 5px;
 }
 
