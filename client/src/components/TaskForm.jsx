@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { API_URL, API_TOKEN } from "../constants/constants";
 
-export function TaskForm({ onClose, onSubmit, task }) {
+export function TaskForm({ onClose, onSubmit, onDelete, task }) {
   const [title, setTitle] = useState("");
   const [taskTypes, setTaskTypes] = useState([]);
   const [selectedTaskTypes, setSelectedTaskTypes] = useState([]);
@@ -38,49 +38,29 @@ export function TaskForm({ onClose, onSubmit, task }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const taskData = {
-      id: task?.id, // <-- important, id numérique ici
+      id: task?.id,
       title,
       task_types: selectedTaskTypes.map((id) => ({ id })),
       state: { id: Number(selectedState) },
       project: { id: Number(selectedProject) },
-      documentId: task?.documentId, // garder aussi documentId si besoin
+      documentId: task?.documentId,
     };
-    console.log("Submitting task data:", taskData);
     onSubmit(taskData);
   };
 
-  const handleDelete = async () => {
-    if (!task?.documentId) return;
-
-    try {
-      const res = await fetch(`${API_URL}/tasks/${task.documentId}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${API_TOKEN}`,
-        },
-      });
-
-      if (!res.ok) {
-        const errorText = await res.text();
-        throw new Error(`Failed to delete task: ${res.status} ${errorText}`);
-      }
-
-      console.log("Task deleted successfully");
-      onClose();
-    } catch (err) {
-      console.error("Error deleting task:", err);
-    }
+  const handleDelete = () => {
+    onDelete(task);
   };
 
   return (
     <div className="popup">
       <div className="popup__inner">
-        <h2>{task?.id ? `Edit a task ${task?.id}` : "Add a task"}</h2>
+        <h2>{task?.id ? `Bewerk taak ${task?.id}` : "Voeg een taak toe"}</h2>
         <form className="popup__container" onSubmit={handleSubmit}>
           <div className="popup__block">
             <div className="popup__content">
               <label className="popup__item">
-                Title:
+                Titel:
                 <input
                   type="text"
                   value={title}
@@ -90,7 +70,7 @@ export function TaskForm({ onClose, onSubmit, task }) {
               </label>
 
               <label className="popup__item">
-                Task Types:
+                Taak Types:
                 <div className="popup__checkbox-group">
                   {taskTypes.map((type) => (
                     <label key={type.id} className="popup__checkbox-item">
@@ -109,7 +89,7 @@ export function TaskForm({ onClose, onSubmit, task }) {
                           }
                         }}
                       />
-                      {type.name || "Unnamed"}
+                      {type.name || "Naamloos"}
                     </label>
                   ))}
                 </div>
@@ -117,15 +97,15 @@ export function TaskForm({ onClose, onSubmit, task }) {
             </div>
             <div className="popup__content">
               <label className="popup__item">
-                State:
+                Status:
                 <select
                   value={selectedState}
                   onChange={(e) => setSelectedState(e.target.value)}
                 >
-                  <option value="">-- Select a state --</option>
+                  <option value="">-- Selecteer een status --</option>
                   {states.map((state) => (
                     <option key={state.id} value={state.id}>
-                      {state.title || "Untitled"}
+                      {state.title || "Geen titel"}
                     </option>
                   ))}
                 </select>
@@ -137,10 +117,10 @@ export function TaskForm({ onClose, onSubmit, task }) {
                   value={selectedProject}
                   onChange={(e) => setSelectedProject(e.target.value)}
                 >
-                  <option value="">-- Select a project --</option>
+                  <option value="">-- Selecteer een project --</option>
                   {projects.map((proj) => (
                     <option key={proj.id} value={proj.id}>
-                      {proj.Name || "Unnamed"}
+                      {proj.Name || "Naamloos"}
                     </option>
                   ))}
                 </select>
@@ -149,14 +129,14 @@ export function TaskForm({ onClose, onSubmit, task }) {
           </div>
           <div className="popup__btn">
             <button type="submit" className="submit">
-              Submit
+              {task?.id ? `Bewerken` : "Aanmaken"}
             </button>
             <button type="button" className="close" onClick={onClose}>
-              Cancel
+              Annuleren
             </button>
             {task?.id && (
               <button type="button" className="delete" onClick={handleDelete}>
-                Delete
+                Verwijderen
               </button>
             )}
           </div>

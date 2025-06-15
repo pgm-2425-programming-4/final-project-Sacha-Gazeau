@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { Sidebar } from "./components/Sidebar";
 import StatusBoard from "./components/StatusBoard";
 import { PaginatedBacklog } from "./components/PaginatedBacklog";
@@ -32,7 +32,6 @@ export default function App() {
       const taskId = task.documentId;
       const url = taskId ? `${API_URL}/tasks/${taskId}` : `${API_URL}/tasks`;
       const method = taskId ? "PUT" : "POST";
-      console.log(url);
 
       const res = await fetch(url, {
         method,
@@ -52,16 +51,43 @@ export default function App() {
 
       if (!res.ok) {
         const errorText = await res.text();
-        throw new Error(`Erreur ${res.status}: ${errorText}`);
+        throw new Error(`Error ${res.status}: ${errorText}`);
       }
 
-      setNotification({ type: "success", message: "✅ Tâche enregistrée !" });
+      setNotification({ type: "success", message: "✅ Taak opgeslagen!" });
     } catch (err) {
       console.error(err);
       setNotification({
         type: "error",
-        message: "❌ Erreur lors de l'enregistrement",
+        message: "❌ Fout bij het opslaan",
       });
+    } finally {
+      handleCloseForm();
+      queryClient.invalidateQueries(["tasks"]);
+      setTimeout(() => setNotification(null), 3000);
+    }
+  };
+
+  const handleDeleteTask = async (task) => {
+    if (!task?.documentId) return;
+
+    try {
+      const res = await fetch(`${API_URL}/tasks/${task.documentId}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${API_TOKEN}`,
+        },
+      });
+
+      if (!res.ok) {
+        const errorText = await res.text();
+        throw new Error(`Fout bij het verwijderen van de taak: ${res.status} ${errorText}`);
+      }
+
+      setNotification({ type: "success", message: "Taak succesvol verwijderd!" });
+    } catch (err) {
+      console.error("Error deleting task:", err);
+      setNotification({ type: "error", message: "Fout bij het verwijderen van de taak." });
     } finally {
       handleCloseForm();
       queryClient.invalidateQueries(["tasks"]);
@@ -126,6 +152,7 @@ export default function App() {
           task={taskToEdit}
           onClose={handleCloseForm}
           onSubmit={handleSubmitTask}
+          onDelete={handleDeleteTask}
         />
       )}
       {notification && (
