@@ -1,5 +1,5 @@
 export const API_URL = import.meta.env.PROD
-  ? "http://localhost:1337/api"
+  ? "https://final-project-sacha-gazeau.onrender.com/api"
   : "https://final-project-sacha-gazeau.onrender.com/api";
 
 export const API_TOKEN = import.meta.env.PROD

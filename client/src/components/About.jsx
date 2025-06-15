@@ -6,7 +6,7 @@ export function About() {
         This is a Kanban application developed as part of a project. It helps
         manage tasks and projects efficiently.
       </p>
-      <p>Contact: your.email@arteveldehs.be</p>
+      <p>Contact: sacha.gazeau@student.arteveldehs.be</p>
       <p>
         LinkedIn:{" "}
         <a href="https://www.linkedin.com/in/yourprofile">
