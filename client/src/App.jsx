@@ -16,7 +16,6 @@ export default function App() {
   const [searchTerm, setSearchTerm] = useState("");
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [notification, setNotification] = useState(null);
-  const [showBacklog, setShowBacklog] = useState(false);
   const queryClient = useQueryClient();
 
   const handleAddTask = () => {
@@ -121,7 +120,6 @@ export default function App() {
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
             onAddTask={handleAddTask}
-            onViewBacklog={() => setShowBacklog((prev) => !prev)}
           />
         </header>
         <Routes>

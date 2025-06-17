@@ -108,7 +108,7 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
                   <option value="">-- Selecteer een project --</option>
                   {projects.map((proj) => (
                     <option key={proj.id} value={proj.id}>
-                      {proj.Name || "Naamloos"}
+                      {proj.name || "Naamloos"}
                     </option>
                   ))}
                 </select>
@@ -128,11 +128,14 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
                 </select>
               </label>
             </div>
-            <div className="popup__content">
+            <div
+              className="popup__content popup__content--description"
+            >
               <label className="popup__item">
                 Beschrijving:
                 <textarea
                   value={description}
+                  rows="4"
                   onChange={(e) => setDescription(e.target.value)}
                 />
               </label>

@@ -40,6 +40,9 @@
     gap: 1rem;
   }
 }
+.popup__content--description {
+  grid-column: 1 / -1;
+}
 .popup__btn {
   display: flex;
   flex-direction: row;
