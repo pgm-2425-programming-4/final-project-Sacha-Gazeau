@@ -1,28 +1,30 @@
+import { Link } from "@tanstack/react-router";
+
 export function Sidebar({ projects, onProjectSelect }) {
   return (
     <nav>
-      <a className="sidebar__item" to="/" end>
+      <Link className="sidebar__item" to="/">
         Home
-      </a>
+      </Link>
       <h2 className="sidebar__title">PROJECTS</h2>
       <ul className="sidebar__list">
         {projects.map((project) => (
           <li key={project} onClick={() => onProjectSelect(project)}>
-            <a
+            <Link
               className={({ isActive }) =>
                 "sidebar__item" + (isActive ? " active" : "")
               }
               to={`/projects/${project}`}
             >
               {project}
-            </a>
+            </Link>
           </li>
         ))}
       </ul>
       <h2 className="sidebar__title">INFO</h2>
-      <a className="sidebar__item" to="/about">
+      <Link className="sidebar__item" to="/about">
         About
-      </a>
+      </Link>
     </nav>
   );
 }
