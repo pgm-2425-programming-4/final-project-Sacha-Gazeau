@@ -1,13 +1,19 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Topbar({
   selectedLabel,
   onLabelChange,
   searchTerm,
   onSearchChange,
   onAddTask,
-  onViewBacklog,
+  activeProject,
 }) {
   const labels = ["All", "Front-end", "Back-end", "Infra", "Documentation"];
+  const navigate = useNavigate();
 
+  const handleViewBacklog = () => {
+    navigate(`/projects/${activeProject}/backlog`);
+  };
   return (
     <>
       <div className="taskboard__filters">
@@ -39,7 +45,7 @@ export default function Topbar({
         <button className="btn btn--add" onClick={onAddTask}>
           Add new task
         </button>
-        <button className="btn btn--backlog" onClick={onViewBacklog}>
+        <button className="btn btn--backlog" onClick={handleViewBacklog}>
           View backlog
         </button>
       </div>

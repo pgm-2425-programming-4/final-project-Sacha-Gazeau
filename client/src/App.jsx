@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
+import {  useNavigate, useLocation } from "react-router-dom";
 import { Sidebar } from "./components/Sidebar";
 import StatusBoard from "./components/StatusBoard";
 import { PaginatedBacklog } from "./components/PaginatedBacklog";
@@ -11,12 +12,15 @@ import { Home } from "./components/Home";
 import { About } from "./components/About";
 
 export default function App() {
-  const [activeProject, setActiveProject] = useState("PGM3");
   const [selectedLabel, setSelectedLabel] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [notification, setNotification] = useState(null);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const params = /\/projects\/([^/]+)/.exec(location.pathname);
+  const activeProject = params ? params[1].toUpperCase() : null;
 
   const handleAddTask = () => {
     setTaskToEdit({});
@@ -103,13 +107,17 @@ export default function App() {
     }
   };
 
+  const handleProjectSelect = (project) => {
+    navigate(`/projects/${project}`);
+  };
+
   return (
-    <Router>
+    <>
       <aside className="sidebar">
         <Sidebar
           projects={["PGM3", "PGM4"]}
           activeProject={activeProject}
-          onProjectSelect={setActiveProject}
+          onProjectSelect={handleProjectSelect}
         />
       </aside>
       <main className="taskboard">
@@ -120,6 +128,7 @@ export default function App() {
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
             onAddTask={handleAddTask}
+            activeProject={activeProject}
           />
         </header>
         <Routes>
@@ -160,6 +169,6 @@ export default function App() {
           {notification.message}
         </div>
       )}
-    </Router>
+    </>
   );
 }
