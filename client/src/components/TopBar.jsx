@@ -12,6 +12,7 @@ export default function Topbar({
   const navigate = useNavigate();
 
   const handleViewBacklog = () => {
+    if (!activeProject) return;
     navigate(`/projects/${activeProject}/backlog`);
   };
   return (
@@ -45,7 +46,11 @@ export default function Topbar({
         <button className="btn btn--add" onClick={onAddTask}>
           Add new task
         </button>
-        <button className="btn btn--backlog" onClick={handleViewBacklog}>
+        <button
+          className="btn btn--backlog"
+          onClick={handleViewBacklog}
+          disabled={!activeProject}
+        >
           View backlog
         </button>
       </div>
