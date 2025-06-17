@@ -8,9 +8,6 @@ export default function Topbar({
 }) {
   const labels = ["All", "Front-end", "Back-end", "Infra", "Documentation"];
 
-  const handleViewBacklog = () => {
-    if (!activeProject) return;
-  };
   return (
     <>
       <div className="taskboard__filters">
@@ -42,11 +39,7 @@ export default function Topbar({
         <button className="btn btn--add" onClick={onAddTask}>
           Add new task
         </button>
-        <button
-          className="btn btn--backlog"
-          onClick={handleViewBacklog}
-          disabled={!activeProject}
-        >
+        <button className="btn btn--backlog" disabled={!activeProject}>
           View backlog
         </button>
       </div>

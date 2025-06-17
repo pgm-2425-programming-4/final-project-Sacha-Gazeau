@@ -1,11 +1,8 @@
+import { useOutletContext } from "@tanstack/react-router";
 import { StatusColumn } from "./StatusColumn";
 
-export default function StatusBoard({
-  project,
-  selectedLabel,
-  searchTerm,
-  onEditTask,
-}) {
+export default function StatusBoard({ project, onEditTask }) {
+  const { selectedLabel, searchTerm } = useOutletContext();
   const statuses = ["To do", "In progress", "Ready for review", "Done"];
 
   return (

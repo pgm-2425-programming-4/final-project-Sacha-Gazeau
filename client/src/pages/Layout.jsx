@@ -1,26 +1,31 @@
-import { Outlet } from "@tanstack/react-router";
-import { useState } from "react";
+import { Outlet, useLocation } from "@tanstack/react-router";
+import { useContext } from "react";
 import { Sidebar } from "../components/Sidebar";
-import TopBar from "../components/TopBar";
-import { TaskForm } from "../components/TaskForm";
+import Topbar from "../components/TopBar";
+import TaskForm from "../components/TaskForm";
 import { API_URL, API_TOKEN } from "../constants/constants";
 import { useQueryClient } from "@tanstack/react-query";
+import { AppProvider, AppContext } from "../context/AppContext.jsx";
 
-export default function Layout() {
-  const [selectedLabel, setSelectedLabel] = useState("All");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [taskToEdit, setTaskToEdit] = useState(null);
-  const [notification, setNotification] = useState(null);
+function LayoutContent() {
   const queryClient = useQueryClient();
-  const handleCloseForm = () => {
-    setTaskToEdit(null);
-  };
-  const handleProjectSelect = (project) => {
-    project;
-    // Ajoutez ici la logique pour gérer la sélection du projet
-  };
+  const location = useLocation();
+  const {
+    selectedLabel,
+    setSelectedLabel,
+    searchTerm,
+    setSearchTerm,
+    taskToEdit,
+    setTaskToEdit,
+    notification,
+    setNotification,
+  } = useContext(AppContext);
 
-  const projects = ["PGM3", "PGM4"];
+  const params = /\/projects\/([^/]+)/.exec(location.pathname);
+  const activeProject = params ? params[1].toUpperCase() : null;
+
+  const handleCloseForm = () => setTaskToEdit(null);
+
   const handleSubmitTask = async (task) => {
     try {
       const taskId = task.documentId;
@@ -63,6 +68,8 @@ export default function Layout() {
     }
   };
 
+  const handleAddTask = () => setTaskToEdit({});
+
   const handleDeleteTask = async (task) => {
     if (!task?.documentId) return;
 
@@ -97,40 +104,34 @@ export default function Layout() {
       setTimeout(() => setNotification(null), 3000);
     }
   };
+
   return (
     <>
       <aside className="sidebar">
-        <Sidebar projects={projects} onProjectSelect={handleProjectSelect} />
+        <Sidebar projects={["PGM3", "PGM4"]} onProjectSelect={() => {}} />
       </aside>
 
       <main className="taskboard">
         <header className="taskboard__header">
-          <TopBar
+          <Topbar
             selectedLabel={selectedLabel}
             onLabelChange={setSelectedLabel}
             searchTerm={searchTerm}
             onSearchChange={setSearchTerm}
-            onAddTask={() => setTaskToEdit({})}
+            onAddTask={handleAddTask}
+            activeProject={activeProject}
           />
         </header>
 
         <Outlet
-          context={{
-            selectedLabel,
-            searchTerm,
-            taskToEdit,
-            setTaskToEdit,
-            setSelectedLabel,
-            setSearchTerm,
-            setNotification,
-          }}
+          context={{ activeProject, selectedLabel, searchTerm, setTaskToEdit }}
         />
       </main>
 
       {taskToEdit !== null && (
         <TaskForm
           task={taskToEdit}
-          onClose={() => setTaskToEdit(null)}
+          onClose={handleCloseForm}
           onSubmit={handleSubmitTask}
           onDelete={handleDeleteTask}
         />
@@ -142,5 +143,13 @@ export default function Layout() {
         </div>
       )}
     </>
+  );
+}
+
+export default function Layout() {
+  return (
+    <AppProvider>
+      <LayoutContent />
+    </AppProvider>
   );
 }
