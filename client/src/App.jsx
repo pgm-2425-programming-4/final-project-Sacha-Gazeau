@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
 import { Sidebar } from "./components/Sidebar";
 import StatusBoard from "./components/StatusBoard";
 import { PaginatedBacklog } from "./components/PaginatedBacklog";
@@ -16,8 +15,6 @@ export default function App() {
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [notification, setNotification] = useState(null);
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const location = useLocation();
   const params = /\/projects\/([^/]+)/.exec(location.pathname);
   const activeProject = params ? params[1].toUpperCase() : null;
 
@@ -106,18 +103,10 @@ export default function App() {
     }
   };
 
-  const handleProjectSelect = (project) => {
-    navigate(`/projects/${project}`);
-  };
-
   return (
     <>
       <aside className="sidebar">
-        <Sidebar
-          projects={["PGM3", "PGM4"]}
-          activeProject={activeProject}
-          onProjectSelect={handleProjectSelect}
-        />
+        <Sidebar projects={["PGM3", "PGM4"]} activeProject={activeProject} />
       </aside>
       <main className="taskboard">
         <header className="taskboard__header">

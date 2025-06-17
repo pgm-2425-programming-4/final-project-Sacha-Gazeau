@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-
 export default function Topbar({
   selectedLabel,
   onLabelChange,
@@ -9,11 +7,9 @@ export default function Topbar({
   activeProject,
 }) {
   const labels = ["All", "Front-end", "Back-end", "Infra", "Documentation"];
-  const navigate = useNavigate();
 
   const handleViewBacklog = () => {
     if (!activeProject) return;
-    navigate(`/projects/${activeProject}/backlog`);
   };
   return (
     <>

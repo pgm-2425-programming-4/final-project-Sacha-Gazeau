@@ -150,7 +150,7 @@ export const routeTree = rootRoute
 {
   "routes": {
     "__root__": {
-      "filePath": "__root.jsx",
+      "filePath": "__root.tsx",
       "children": [
         "/",
         "/about",
@@ -158,19 +158,19 @@ export const routeTree = rootRoute
       ]
     },
     "/": {
-      "filePath": "index.jsx"
+      "filePath": "index.tsx"
     },
     "/about": {
-      "filePath": "about.jsx"
+      "filePath": "about.tsx"
     },
     "/projects/$projectId": {
-      "filePath": "projects/$projectId.jsx",
+      "filePath": "projects/$projectId.tsx",
       "children": [
         "/projects/$projectId/backlog"
       ]
     },
     "/projects/$projectId/backlog": {
-      "filePath": "projects/$projectId.backlog.jsx",
+      "filePath": "projects/$projectId.backlog.tsx",
       "parent": "/projects/$projectId"
     }
   }
