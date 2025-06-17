@@ -3,6 +3,7 @@ import { API_URL, API_TOKEN } from "../constants/constants";
 
 export function TaskForm({ onClose, onSubmit, onDelete, task }) {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [taskTypes, setTaskTypes] = useState([]);
   const [selectedTaskTypes, setSelectedTaskTypes] = useState([]);
   const [states, setStates] = useState([]);
@@ -29,6 +30,7 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
   useEffect(() => {
     if (task) {
       setTitle(task.title || "");
+      setDescription(task.description || "");
       setSelectedTaskTypes(task.task_types?.map((t) => t.id) || []);
       setSelectedState(task.state?.id?.toString() || "");
       setSelectedProject(task.project?.id?.toString() || "");
@@ -40,6 +42,7 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
     const taskData = {
       id: task?.id,
       title,
+      description,
       task_types: selectedTaskTypes.map((id) => ({ id })),
       state: { id: Number(selectedState) },
       project: { id: Number(selectedProject) },
@@ -97,6 +100,20 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
             </div>
             <div className="popup__content">
               <label className="popup__item">
+                Project:
+                <select
+                  value={selectedProject}
+                  onChange={(e) => setSelectedProject(e.target.value)}
+                >
+                  <option value="">-- Selecteer een project --</option>
+                  {projects.map((proj) => (
+                    <option key={proj.id} value={proj.id}>
+                      {proj.Name || "Naamloos"}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="popup__item">
                 Status:
                 <select
                   value={selectedState}
@@ -110,20 +127,14 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
                   ))}
                 </select>
               </label>
-
+            </div>
+            <div className="popup__content">
               <label className="popup__item">
-                Project:
-                <select
-                  value={selectedProject}
-                  onChange={(e) => setSelectedProject(e.target.value)}
-                >
-                  <option value="">-- Selecteer een project --</option>
-                  {projects.map((proj) => (
-                    <option key={proj.id} value={proj.id}>
-                      {proj.Name || "Naamloos"}
-                    </option>
-                  ))}
-                </select>
+                Beschrijving:
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                />
               </label>
             </div>
           </div>

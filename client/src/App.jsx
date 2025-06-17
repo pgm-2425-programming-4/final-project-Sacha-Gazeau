@@ -42,6 +42,7 @@ export default function App() {
         body: JSON.stringify({
           data: {
             title: task.title,
+            description: task.description,
             task_types: task.task_types,
             state: task.state,
             project: task.project,
@@ -81,13 +82,21 @@ export default function App() {
 
       if (!res.ok) {
         const errorText = await res.text();
-        throw new Error(`Fout bij het verwijderen van de taak: ${res.status} ${errorText}`);
+        throw new Error(
+          `Fout bij het verwijderen van de taak: ${res.status} ${errorText}`
+        );
       }
 
-      setNotification({ type: "success", message: "Taak succesvol verwijderd!" });
+      setNotification({
+        type: "success",
+        message: "Taak succesvol verwijderd!",
+      });
     } catch (err) {
       console.error("Error deleting task:", err);
-      setNotification({ type: "error", message: "Fout bij het verwijderen van de taak." });
+      setNotification({
+        type: "error",
+        message: "Fout bij het verwijderen van de taak.",
+      });
     } finally {
       handleCloseForm();
       queryClient.invalidateQueries(["tasks"]);
@@ -120,19 +129,12 @@ export default function App() {
           <Route
             path="/projects/:id"
             element={
-              showBacklog ? (
-                <PaginatedBacklog
-                  activeProject={activeProject}
-                  onEditTask={setTaskToEdit}
-                />
-              ) : (
-                <StatusBoard
-                  project={activeProject}
-                  selectedLabel={selectedLabel}
-                  searchTerm={searchTerm}
-                  onEditTask={setTaskToEdit}
-                />
-              )
+              <StatusBoard
+                project={activeProject}
+                selectedLabel={selectedLabel}
+                searchTerm={searchTerm}
+                onEditTask={setTaskToEdit}
+              />
             }
           />
           <Route

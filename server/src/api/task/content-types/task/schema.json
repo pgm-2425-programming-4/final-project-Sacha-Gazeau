@@ -32,6 +32,9 @@
       "relation": "manyToOne",
       "target": "api::state.state",
       "inversedBy": "tasks"
+    },
+    "description": {
+      "type": "text"
     }
   }
 }
