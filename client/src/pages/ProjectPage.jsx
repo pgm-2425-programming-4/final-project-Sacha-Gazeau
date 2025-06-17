@@ -1,20 +1,19 @@
-// pages/ProjectPage.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import StatusBoard from "../components/StatusBoard";
 
-export default function ProjectPage() {
+export default function ProjectPage({ projectId }) {
   const [selectedLabel] = useState("All");
   const [searchTerm] = useState("");
 
-  const params = /\/projects\/([^/]+)/.exec(window.location.pathname);
-  const activeProject = params ? params[1].toUpperCase() : null;
+  useEffect(() => {
+  }, [projectId]);
 
   return (
     <StatusBoard
-      project={activeProject}
+      project={projectId}
       selectedLabel={selectedLabel}
       searchTerm={searchTerm}
-      onEditTask={() => {}} // Passer une fonction vide si nécessaire
+      onEditTask={() => {}}
     />
   );
 }
