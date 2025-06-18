@@ -6,9 +6,7 @@ export function Sidebar({ projects, onProjectSelect }) {
   return (
     <nav>
       <Link
-        className={
-          location.pathname === "/" ? "sidebar__item active" : "sidebar__item"
-        }
+        className={location.pathname === "/" ? "sidebar__item active" : "sidebar__item"}
         to="/"
       >
         Home
@@ -34,11 +32,7 @@ export function Sidebar({ projects, onProjectSelect }) {
 
       <h2 className="sidebar__title">INFO</h2>
       <Link
-        className={
-          location.pathname === "/about"
-            ? "sidebar__item active"
-            : "sidebar__item"
-        }
+        className={location.pathname === "/about" ? "sidebar__item active" : "sidebar__item"}
         to="/about"
       >
         About

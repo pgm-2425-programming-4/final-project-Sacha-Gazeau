@@ -1,31 +1,25 @@
-import { Outlet, useLocation } from "@tanstack/react-router";
-import { useContext } from "react";
+import { Outlet } from "@tanstack/react-router";
+import { useState } from "react";
 import { Sidebar } from "../components/Sidebar";
-import Topbar from "../components/TopBar";
-import TaskForm from "../components/TaskForm";
+import TopBar from "../components/TopBar";
+import { TaskForm } from "../components/TaskForm";
 import { API_URL, API_TOKEN } from "../constants/constants";
 import { useQueryClient } from "@tanstack/react-query";
-import { AppProvider, AppContext } from "../context/AppContext.jsx";
 
-function LayoutContent() {
+export default function Layout() {
+  const [selectedLabel, setSelectedLabel] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [notification, setNotification] = useState(null);
   const queryClient = useQueryClient();
-  const location = useLocation();
-  const {
-    selectedLabel,
-    setSelectedLabel,
-    searchTerm,
-    setSearchTerm,
-    taskToEdit,
-    setTaskToEdit,
-    notification,
-    setNotification,
-  } = useContext(AppContext);
-
   const params = /\/projects\/([^/]+)/.exec(location.pathname);
   const activeProject = params ? params[1].toUpperCase() : null;
 
   const handleCloseForm = () => setTaskToEdit(null);
 
+  const handleAddTask = () => {
+    setTaskToEdit({});
+  };
   const handleSubmitTask = async (task) => {
     try {
       const taskId = task.documentId;
@@ -68,8 +62,6 @@ function LayoutContent() {
     }
   };
 
-  const handleAddTask = () => setTaskToEdit({});
-
   const handleDeleteTask = async (task) => {
     if (!task?.documentId) return;
 
@@ -104,16 +96,15 @@ function LayoutContent() {
       setTimeout(() => setNotification(null), 3000);
     }
   };
-
   return (
     <>
       <aside className="sidebar">
-        <Sidebar projects={["PGM3", "PGM4"]} onProjectSelect={() => {}} />
+        <Sidebar projects={["PGM3", "PGM4"]} activeProject={activeProject} />
       </aside>
 
       <main className="taskboard">
         <header className="taskboard__header">
-          <Topbar
+          <TopBar
             selectedLabel={selectedLabel}
             onLabelChange={setSelectedLabel}
             searchTerm={searchTerm}
@@ -123,11 +114,21 @@ function LayoutContent() {
           />
         </header>
 
+        {/* Passer les états et setters via context à Outlet */}
         <Outlet
-          context={{ activeProject, selectedLabel, searchTerm, setTaskToEdit }}
+          context={{
+            selectedLabel,
+            searchTerm,
+            taskToEdit,
+            setTaskToEdit,
+            setSelectedLabel,
+            setSearchTerm,
+            setNotification,
+          }}
         />
       </main>
 
+      {/* Formulaire visible uniquement si taskToEdit est défini */}
       {taskToEdit !== null && (
         <TaskForm
           task={taskToEdit}
@@ -143,13 +144,5 @@ function LayoutContent() {
         </div>
       )}
     </>
-  );
-}
-
-export default function Layout() {
-  return (
-    <AppProvider>
-      <LayoutContent />
-    </AppProvider>
   );
 }

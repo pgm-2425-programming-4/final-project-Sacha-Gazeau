@@ -1,14 +1,9 @@
+import { useParams } from "@tanstack/react-router";
 import { PaginatedBacklog } from "../components/PaginatedBacklog";
-import { useOutletContext } from "@tanstack/react-router";
 
 export default function BacklogPage() {
-  const { activeProject, setTaskToEdit, selectedLabel, searchTerm } =
-    useOutletContext();
+  const { projectId } = useParams({ from: "/projects/$projectId/backlog" });
+  console.log("Project ID:", projectId); // Ajoutez ce log pour vérifier le projectId
 
-  return (
-    <PaginatedBacklog
-      activeProject={activeProject}
-      onEditTask={setTaskToEdit}
-    />
-  );
+  return <PaginatedBacklog projectId={projectId} />;
 }
