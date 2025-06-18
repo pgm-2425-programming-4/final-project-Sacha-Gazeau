@@ -4,7 +4,7 @@ import { TaskForm } from "../components/TaskForm";
 import { API_URL, API_TOKEN } from "../constants/constants";
 import { useQueryClient } from "@tanstack/react-query";
 import TopBar from "../components/TopBar";
-import { Outlet } from "@tanstack/react-router";
+import { Outlet, useLocation } from "@tanstack/react-router";
 
 export default function ProjectPage({ projectId }) {
   const [selectedLabel, setSelectedLabel] = useState("All");
@@ -12,8 +12,11 @@ export default function ProjectPage({ projectId }) {
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [notification, setNotification] = useState(null);
   const queryClient = useQueryClient();
+  const location = useLocation();
+
   const params = /\/projects\/([^/]+)/.exec(location.pathname);
   const activeProject = params ? params[1].toUpperCase() : null;
+
   useEffect(() => {}, [projectId]);
 
   const handleCloseForm = () => setTaskToEdit(null);
@@ -109,12 +112,15 @@ export default function ProjectPage({ projectId }) {
           activeProject={activeProject}
         />
       </header>
-      <StatusBoard
-        project={activeProject}
-        selectedLabel={selectedLabel}
-        searchTerm={searchTerm}
-        onEditTask={setTaskToEdit}
-      />
+      {/* Affiche StatusBoard seulement si on n'est pas sur /backlog */}
+      {!location.pathname.endsWith("/backlog") && (
+        <StatusBoard
+          project={activeProject}
+          selectedLabel={selectedLabel}
+          searchTerm={searchTerm}
+          onEditTask={setTaskToEdit}
+        />
+      )}
       {taskToEdit !== null && (
         <TaskForm
           task={taskToEdit}

@@ -19,6 +19,8 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
         },
       });
       const json = await res.json();
+      console.log(res);
+
       setter(json.data);
     }
 

@@ -1,7 +1,6 @@
 import { Outlet } from "@tanstack/react-router";
 import { useState } from "react";
 import { Sidebar } from "../components/Sidebar";
-import TopBar from "../components/TopBar";
 import { TaskForm } from "../components/TaskForm";
 import { API_URL, API_TOKEN } from "../constants/constants";
 import { useQueryClient } from "@tanstack/react-query";
