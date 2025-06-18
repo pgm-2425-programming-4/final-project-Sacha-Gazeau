@@ -7,3 +7,21 @@
 Klik op [Render](https://final-project-sacha-gazeau.onrender.com/) om toegang te krijgen tot de API.
 
 Klik op [Netlify](https://finalprojectsacha.netlify.app) om de webapplicatie te bekijken.
+
+
+### Frontend (Client)
+ 
+```bash
+cd client
+npm i
+npm run dev
+```
+
+### Backend (Server)
+ 
+
+cd server
+npm i
+npm run develop
+```
+ 
