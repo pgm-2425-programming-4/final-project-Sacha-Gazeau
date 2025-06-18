@@ -16,10 +16,6 @@ export default function Layout() {
   const activeProject = params ? params[1].toUpperCase() : null;
 
   const handleCloseForm = () => setTaskToEdit(null);
-
-  const handleAddTask = () => {
-    setTaskToEdit({});
-  };
   const handleSubmitTask = async (task) => {
     try {
       const taskId = task.documentId;
@@ -103,16 +99,6 @@ export default function Layout() {
       </aside>
 
       <main className="taskboard">
-        <header className="taskboard__header">
-          <TopBar
-            selectedLabel={selectedLabel}
-            onLabelChange={setSelectedLabel}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            onAddTask={handleAddTask}
-            activeProject={activeProject}
-          />
-        </header>
 
         {/* Passer les états et setters via context à Outlet */}
         <Outlet

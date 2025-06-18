@@ -3,10 +3,12 @@ import StatusBoard from "../components/StatusBoard";
 import { TaskForm } from "../components/TaskForm";
 import { API_URL, API_TOKEN } from "../constants/constants";
 import { useQueryClient } from "@tanstack/react-query";
+import TopBar from "../components/TopBar";
+import { Outlet } from "@tanstack/react-router";
 
 export default function ProjectPage({ projectId }) {
-  const [selectedLabel] = useState("All");
-  const [searchTerm] = useState("");
+  const [selectedLabel, setSelectedLabel] = useState("All");
+  const [searchTerm, setSearchTerm] = useState("");
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [notification, setNotification] = useState(null);
   const queryClient = useQueryClient();
@@ -15,7 +17,9 @@ export default function ProjectPage({ projectId }) {
   useEffect(() => {}, [projectId]);
 
   const handleCloseForm = () => setTaskToEdit(null);
-
+  const handleAddTask = () => {
+    setTaskToEdit({});
+  };
   const handleSubmitTask = async (task) => {
     try {
       const taskId = task.documentId;
@@ -95,6 +99,16 @@ export default function ProjectPage({ projectId }) {
 
   return (
     <>
+      <header className="taskboard__header">
+        <TopBar
+          selectedLabel={selectedLabel}
+          onLabelChange={setSelectedLabel}
+          searchTerm={searchTerm}
+          onSearchChange={setSearchTerm}
+          onAddTask={handleAddTask}
+          activeProject={activeProject}
+        />
+      </header>
       <StatusBoard
         project={activeProject}
         selectedLabel={selectedLabel}
@@ -114,6 +128,7 @@ export default function ProjectPage({ projectId }) {
           {notification.message}
         </div>
       )}
+      <Outlet />
     </>
   );
 }
