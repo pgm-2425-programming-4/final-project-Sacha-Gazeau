@@ -16,11 +16,11 @@ export default function Backlog({ tasks }) {
               <td className="backlog__cell">{task.title}</td>
               <td className="backlog__cell">{task.description || "-"}</td>
               <td className="backlog__cell">
-                {task.dueDate
-                  ? new Date(task.dueDate).toLocaleDateString()
+                {task.publishedAt
+                  ? new Date(task.publishedAt).toLocaleDateString()
                   : "-"}
               </td>
-              <td className="backlog__cell">{task.state?.name || "-"}</td>
+              <td className="backlog__cell">{task.state?.title || "-"}</td>
             </tr>
           ))}
         </tbody>
