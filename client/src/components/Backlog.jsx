@@ -1,9 +1,4 @@
 export default function Backlog({ tasks }) {
-  // 🔽 Trie les tâches par date de mise à jour (plus récent en haut)
-  const sortedTasks = [...tasks].sort((a, b) => {
-    return new new Date(a.publishedAt) - Date(b.publishedAt)  ;
-  });
-
   return (
     <div className="backlog">
       <table className="backlog__table">
@@ -16,7 +11,7 @@ export default function Backlog({ tasks }) {
           </tr>
         </thead>
         <tbody className="backlog__tbody">
-          {sortedTasks.map((task) => (
+          {tasks.map((task) => (
             <tr key={task.id} className="backlog__row">
               <td className="backlog__cell">{task.title}</td>
               <td className="backlog__cell">{task.description || "-"}</td>
