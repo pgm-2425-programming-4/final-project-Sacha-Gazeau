@@ -1,5 +1,3 @@
-
-
 export default function AboutPage() {
   return (
     <div>
@@ -11,7 +9,11 @@ export default function AboutPage() {
       <p>Contact: sacha.gazeau@student.arteveldehs.be</p>
       <p>
         LinkedIn:{" "}
-        <a href="https://www.linkedin.com/in/yourprofile">
+        <a
+          href="https://www.linkedin.com/in/sacha-gazeau"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           Your LinkedIn Profile
         </a>
       </p>
