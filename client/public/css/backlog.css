@@ -1,0 +1,34 @@
+.backlog {
+  font-family: Arial, sans-serif;
+}
+
+.backlog__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.backlog__thead {
+  background-color: #f8f8f8;
+}
+
+.backlog__header-row {
+  border-bottom: 2px solid #ddd;
+}
+
+.backlog__header {
+  padding: 12px;
+  text-align: left;
+}
+
+.backlog__row {
+  border-bottom: 1px solid #ddd;
+}
+
+.backlog__row:hover {
+  background-color: #f1f1f1;
+}
+
+.backlog__cell {
+  padding: 12px;
+  text-align: left;
+}

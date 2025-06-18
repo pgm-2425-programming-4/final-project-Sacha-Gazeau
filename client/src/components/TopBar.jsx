@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router";
 
-export default function Topbar({
+export default function TopBar({
   selectedLabel,
   onLabelChange,
   searchTerm,
@@ -13,8 +13,9 @@ export default function Topbar({
 
   const handleViewBacklog = () => {
     if (!activeProject) return;
-    navigate(`/projects/${activeProject}/backlog`);
+    navigate({ to: `/projects/${activeProject}/backlog` });
   };
+
   return (
     <>
       <div className="taskboard__filters">
@@ -24,14 +25,17 @@ export default function Topbar({
           onChange={(e) => onLabelChange(e.target.value)}
           aria-label="Filter tasks by label"
         >
-          <option className="visually-hidden" disabled>
-            Select label
-          </option>
-          {labels.map((label) => (
-            <option key={label} value={label}>
-              {label}
+          {!labels || labels.length === 0 ? (
+            <option className="visually-hidden" disabled>
+              Aucun label
             </option>
-          ))}
+          ) : (
+            labels.map((label) => (
+              <option key={label} value={label}>
+                {label}
+              </option>
+            ))
+          )}
         </select>
 
         <input
@@ -53,6 +57,7 @@ export default function Topbar({
         >
           View backlog
         </button>
+        
       </div>
     </>
   );

@@ -1,18 +1,18 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { API_URL, API_TOKEN } from "../constants/constants";
 import Backlog from "./Backlog";
 import { Pagination } from "./Pagination";
-import { API_TOKEN, API_URL } from "../constants/constants";
 
-export function PaginatedBacklog() {
+export function PaginatedBacklog({ projectId }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
 
   const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["backlogTasks", currentPage, pageSize],
+    queryKey: ["backlogTasks", projectId, currentPage, pageSize],
     queryFn: async () => {
       const res = await fetch(
-        `${API_URL}/tasks?populate=*&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
+        `${API_URL}/tasks?filters[project][Name][$eq]=${projectId}&populate=*&pagination[page]=${currentPage}&pagination[pageSize]=${pageSize}`,
         {
           headers: {
             Authorization: `Bearer ${API_TOKEN}`,
@@ -33,20 +33,12 @@ export function PaginatedBacklog() {
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading tasks: {error.message}</p>;
 
-  if (!data || !data.data) {
-    return <p>No data available.</p>;
-  }
-
-  const tasks = data.data;
-  const pageCount = data.meta?.pagination?.pageCount || 1;
-
-  console.log("Current Page:", currentPage);
-  console.log("Page Size:", pageSize);
-  console.log("Fetched Data:", data);
+  const tasks = data?.data || [];
+  const pageCount = data?.meta?.pagination?.pageCount || 1;
 
   return (
     <>
-      <h2>Backlog</h2>
+      <h2>Backlog for Project {projectId}</h2>
       <Backlog tasks={tasks} />
       <Pagination
         currentPage={currentPage}

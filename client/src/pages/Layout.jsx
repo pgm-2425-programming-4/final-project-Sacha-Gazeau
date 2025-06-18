@@ -1,34 +1,20 @@
+import { Outlet } from "@tanstack/react-router";
 import { useState } from "react";
-import { Route, Routes, useNavigate, useLocation } from "react-router-dom";
-import { Sidebar } from "./components/Sidebar";
-import StatusBoard from "./components/StatusBoard";
-import { PaginatedBacklog } from "./components/PaginatedBacklog";
-import TopBar from "./components/TopBar";
-import { TaskForm } from "./components/TaskForm";
-import { API_URL, API_TOKEN } from "./constants/constants";
+import { Sidebar } from "../components/Sidebar";
+import { TaskForm } from "../components/TaskForm";
+import { API_URL, API_TOKEN } from "../constants/constants";
 import { useQueryClient } from "@tanstack/react-query";
-import { Home } from "./components/Home";
-import { About } from "./components/About";
 
-export default function App() {
+export default function Layout() {
   const [selectedLabel, setSelectedLabel] = useState("All");
   const [searchTerm, setSearchTerm] = useState("");
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [notification, setNotification] = useState(null);
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
-  const location = useLocation();
   const params = /\/projects\/([^/]+)/.exec(location.pathname);
   const activeProject = params ? params[1].toUpperCase() : null;
 
-  const handleAddTask = () => {
-    setTaskToEdit({});
-  };
-
-  const handleCloseForm = () => {
-    setTaskToEdit(null);
-  };
-
+  const handleCloseForm = () => setTaskToEdit(null);
   const handleSubmitTask = async (task) => {
     try {
       const taskId = task.documentId;
@@ -105,56 +91,29 @@ export default function App() {
       setTimeout(() => setNotification(null), 3000);
     }
   };
-
-  const handleProjectSelect = (project) => {
-    navigate(`/projects/${project}`);
-  };
-
   return (
     <>
       <aside className="sidebar">
-        <Sidebar
-          projects={["PGM3", "PGM4"]}
-          activeProject={activeProject}
-          onProjectSelect={handleProjectSelect}
-        />
+        <Sidebar projects={["PGM3", "PGM4"]} activeProject={activeProject} />
       </aside>
+
       <main className="taskboard">
-        <header className="taskboard__header">
-          <TopBar
-            selectedLabel={selectedLabel}
-            onLabelChange={setSelectedLabel}
-            searchTerm={searchTerm}
-            onSearchChange={setSearchTerm}
-            onAddTask={handleAddTask}
-            activeProject={activeProject}
-          />
-        </header>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route
-            path="/projects/:id"
-            element={
-              <StatusBoard
-                project={activeProject}
-                selectedLabel={selectedLabel}
-                searchTerm={searchTerm}
-                onEditTask={setTaskToEdit}
-              />
-            }
-          />
-          <Route
-            path="/projects/:id/backlog"
-            element={
-              <PaginatedBacklog
-                activeProject={activeProject}
-                onEditTask={setTaskToEdit}
-              />
-            }
-          />
-          <Route path="/about" element={<About />} />
-        </Routes>
+
+        {/* Passer les états et setters via context à Outlet */}
+        <Outlet
+          context={{
+            selectedLabel,
+            searchTerm,
+            taskToEdit,
+            setTaskToEdit,
+            setSelectedLabel,
+            setSearchTerm,
+            setNotification,
+          }}
+        />
       </main>
+
+      {/* Formulaire visible uniquement si taskToEdit est défini */}
       {taskToEdit !== null && (
         <TaskForm
           task={taskToEdit}
@@ -163,6 +122,7 @@ export default function App() {
           onDelete={handleDeleteTask}
         />
       )}
+
       {notification && (
         <div className={`notification ${notification.type}`}>
           {notification.message}

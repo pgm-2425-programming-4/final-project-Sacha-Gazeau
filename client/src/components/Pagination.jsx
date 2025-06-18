@@ -33,27 +33,28 @@ export function Pagination({
   }
 
   return (
-    <div className="pagination-container">
+    <div className="pagination">
       <button
-        className="pagination-btn"
+        className="pagination__button"
         disabled={currentPage === 1}
         onClick={() => onPageChanged(currentPage - 1)}
       >
         Previous
       </button>
 
-      <ul className="pagination-list">
+      <ul className="pagination__list">
         {pageNumberArray.map((pageNumber, index) =>
           pageNumber === null ? (
-            <li key={index} className="pagination-ellipsis">
+            <li
+              key={index}
+              className="pagination__item pagination__item--ellipsis"
+            >
               …
             </li>
           ) : (
-            <li key={index}>
+            <li key={index} className="pagination__item">
               <button
-                className={`pagination-btn ${
-                  pageNumber === currentPage ? "active" : ""
-                }`}
+                className={`pagination__button ${pageNumber === currentPage ? "pagination__button--active" : ""}`}
                 onClick={() => onPageChanged(pageNumber)}
               >
                 {pageNumber}
@@ -64,7 +65,7 @@ export function Pagination({
       </ul>
 
       <button
-        className="pagination-btn"
+        className="pagination__button"
         disabled={currentPage === pageCount}
         onClick={() => onPageChanged(currentPage + 1)}
       >
@@ -72,7 +73,7 @@ export function Pagination({
       </button>
 
       <select
-        className="pagination-select"
+        className="pagination__select"
         value={pageSize}
         onChange={(e) => onPageSizeChange(Number(e.target.value))}
       >

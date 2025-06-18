@@ -1,26 +1,30 @@
 export default function Backlog({ tasks }) {
   return (
-    <table>
-      <thead>
-        <tr>
-          <th>Titel</th>
-          <th>Beschrijving</th>
-          <th>Deadline</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tasks.map((task) => (
-          <tr key={task.id}>
-            <td>{task.title}</td>
-            <td>{task.description || "-"}</td>
-            <td>
-              {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : "-"}
-            </td>
-            <td>{task.state?.name || "-"}</td>
+    <div className="backlog">
+      <table className="backlog__table">
+        <thead className="backlog__thead">
+          <tr className="backlog__header-row">
+            <th className="backlog__header">Title</th>
+            <th className="backlog__header">Description</th>
+            <th className="backlog__header">Deadline</th>
+            <th className="backlog__header">Status</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody className="backlog__tbody">
+          {tasks.map((task) => (
+            <tr key={task.id} className="backlog__row">
+              <td className="backlog__cell">{task.title}</td>
+              <td className="backlog__cell">{task.description || "-"}</td>
+              <td className="backlog__cell">
+                {task.dueDate
+                  ? new Date(task.dueDate).toLocaleDateString()
+                  : "-"}
+              </td>
+              <td className="backlog__cell">{task.state?.name || "-"}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

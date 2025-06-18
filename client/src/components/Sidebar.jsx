@@ -1,30 +1,42 @@
-import { NavLink } from "react-router-dom";
+import { Link, useLocation } from "@tanstack/react-router";
 
 export function Sidebar({ projects, onProjectSelect }) {
+  const location = useLocation();
+
   return (
     <nav>
-      <NavLink className="sidebar__item" to="/" end>
+      <Link
+        className={location.pathname === "/" ? "sidebar__item active" : "sidebar__item"}
+        to="/"
+      >
         Home
-      </NavLink>
+      </Link>
+
       <h2 className="sidebar__title">PROJECTS</h2>
       <ul className="sidebar__list">
-        {projects.map((project) => (
-          <li key={project} onClick={() => onProjectSelect(project)}>
-            <NavLink
-              className={({ isActive }) =>
-                "sidebar__item" + (isActive ? " active" : "")
-              }
-              to={`/projects/${project}`}
-            >
-              {project}
-            </NavLink>
-          </li>
-        ))}
+        {projects.map((project) => {
+          const isActive = location.pathname === `/projects/${project}`;
+          return (
+            <li key={project}>
+              <Link
+                className={"sidebar__item" + (isActive ? " active" : "")}
+                to={`/projects/${project}`}
+                onClick={() => onProjectSelect(project)}
+              >
+                {project}
+              </Link>
+            </li>
+          );
+        })}
       </ul>
+
       <h2 className="sidebar__title">INFO</h2>
-      <NavLink className="sidebar__item" to="/about">
+      <Link
+        className={location.pathname === "/about" ? "sidebar__item active" : "sidebar__item"}
+        to="/about"
+      >
         About
-      </NavLink>
+      </Link>
     </nav>
   );
 }

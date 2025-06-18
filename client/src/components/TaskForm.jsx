@@ -19,6 +19,8 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
         },
       });
       const json = await res.json();
+      console.log(res);
+
       setter(json.data);
     }
 
@@ -108,7 +110,7 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
                   <option value="">-- Selecteer een project --</option>
                   {projects.map((proj) => (
                     <option key={proj.id} value={proj.id}>
-                      {proj.name || "Naamloos"}
+                      {proj.Name || "Naamloos"}
                     </option>
                   ))}
                 </select>
@@ -128,9 +130,7 @@ export function TaskForm({ onClose, onSubmit, onDelete, task }) {
                 </select>
               </label>
             </div>
-            <div
-              className="popup__content popup__content--description"
-            >
+            <div className="popup__content popup__content--description">
               <label className="popup__item">
                 Beschrijving:
                 <textarea

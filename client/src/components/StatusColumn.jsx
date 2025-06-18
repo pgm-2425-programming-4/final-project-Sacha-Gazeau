@@ -9,9 +9,7 @@ export function StatusColumn({
   onEditTask,
 }) {
   const fetchTasks = async () => {
-    const url = `${API_URL}/tasks?filters[project][Name][$eq]=${encodeURIComponent(
-      project
-    )}&populate[task_types][fields][0]=name&populate[project][fields][0]=Name&populate[state][fields][0]=title`;
+    const url = `${API_URL}/tasks?filters[project][Name][$eq]=${encodeURIComponent(project)}&populate[task_types][fields][0]=name&populate[project][fields][0]=Name&populate[state][fields][0]=title`;
 
     const res = await fetch(url, {
       headers: {
@@ -40,7 +38,8 @@ export function StatusColumn({
   const filteredTasks = tasks
     .filter((task) => {
       const stateTitle = task?.state?.title;
-      return stateTitle?.toLowerCase() === status.toLowerCase();
+      const matchesStatus = stateTitle?.toLowerCase() === status.toLowerCase();
+      return matchesStatus;
     })
     .filter((task) => {
       const title = task.title?.toLowerCase() || "";
