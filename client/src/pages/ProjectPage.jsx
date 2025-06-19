@@ -102,17 +102,18 @@ export default function ProjectPage({ projectId }) {
 
   return (
     <>
-      <header className="taskboard__header">
-        <TopBar
-          selectedLabel={selectedLabel}
-          onLabelChange={setSelectedLabel}
-          searchTerm={searchTerm}
-          onSearchChange={setSearchTerm}
-          onAddTask={handleAddTask}
-          activeProject={activeProject}
-        />
-      </header>
-      {/* Affiche StatusBoard seulement si on n'est pas sur /backlog */}
+      {!location.pathname.endsWith("/backlog") && (
+        <header className="taskboard__header">
+          <TopBar
+            selectedLabel={selectedLabel}
+            onLabelChange={setSelectedLabel}
+            searchTerm={searchTerm}
+            onSearchChange={setSearchTerm}
+            onAddTask={handleAddTask}
+            activeProject={activeProject}
+          />
+        </header>
+      )}
       {!location.pathname.endsWith("/backlog") && (
         <StatusBoard
           project={activeProject}
